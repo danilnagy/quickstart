@@ -52,3 +52,5 @@ docker-compose.local*.yml
 
 #vscode
 .vscode
+# Local Netlify folder
+.netlify

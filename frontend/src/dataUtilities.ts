@@ -9,13 +9,13 @@ import {
   InstitutionsGetByIdResponse,
   LiabilitiesGetResponse,
   PaymentInitiationPaymentGetResponse,
-  AssetReportGetResponse,
+  // AssetReportGetResponse,
   AssetReport,
   TransferCreateResponse,
   TransferAuthorizationCreateResponse,
   IncomeVerificationPaystubsGetResponse,
   Paystub,
-  Earnings,
+  // Earnings,
 } from "plaid/dist/api";
 
 const formatCurrency = (
@@ -381,7 +381,7 @@ export const transferCategories: Array<Categories> = [
 ];
 
 export const transferAuthorizationCategories: Array<Categories> = [
-  { 
+  {
     title: "Authorization ID",
     field: "authorizationId"
   },
@@ -433,7 +433,7 @@ export const transformAuthData = (data: AuthGetResponse) => {
 };
 
 export const transformTransactionsData = (
-  data: {latest_transactions: Transaction[]}
+  data: { latest_transactions: Transaction[] }
 ): Array<DataItem> => {
   return data.latest_transactions!.map((t) => {
     const item: DataItem = {
@@ -541,7 +541,7 @@ interface InvestmentsTransactionData {
 }
 
 export const transformInvestmentTransactionsData = (data: InvestmentsTransactionData) => {
-  const investmentTransactionsData = data.investments_transactions.investment_transactions!.sort(function (a,b) {
+  const investmentTransactionsData = data.investments_transactions.investment_transactions!.sort(function (a, b) {
     if (a.account_id > b.account_id) return 1;
     return -1;
   });
@@ -684,9 +684,9 @@ export const transformPaymentData = (data: PaymentData) => {
     typeof data.payment.last_status_update === "string"
       ? data.payment.last_status_update.replace("T", " ").replace("Z", "")
       : new Date(data.payment.last_status_update * 1000) // Java data comes as timestamp
-          .toISOString()
-          .replace("T", " ")
-          .replace("Z", "");
+        .toISOString()
+        .replace("T", " ")
+        .replace("Z", "");
   return [
     {
       paymentId: data.payment.payment_id,
@@ -726,16 +726,16 @@ interface IncomePaystub {
 export const transformIncomePaystubsData = (data: IncomePaystub) => {
   const paystubsItemsArray: Array<Paystub> = data.paystubs.paystubs
   var finalArray: Array<IncomePaystubsDataItem> = []
-  for (var i = 0; i < paystubsItemsArray.length; i++){
+  for (var i = 0; i < paystubsItemsArray.length; i++) {
     var ActualEarningVariable: any = paystubsItemsArray[i].earnings
-    for (var j = 0; j < ActualEarningVariable.breakdown.length; j++){
+    for (var j = 0; j < ActualEarningVariable.breakdown.length; j++) {
       var payStubItem: IncomePaystubsDataItem = {
         description: paystubsItemsArray[i].employer.name + '_' + ActualEarningVariable.breakdown[j].description,
         currentAmount: ActualEarningVariable.breakdown[j].current_amount,
         currency: ActualEarningVariable.breakdown[j].iso_currency_code
       }
-    finalArray.push(payStubItem)
+      finalArray.push(payStubItem)
+    }
   }
-}
   return finalArray
 }
