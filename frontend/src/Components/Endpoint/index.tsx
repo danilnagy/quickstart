@@ -15,6 +15,7 @@ interface Props {
   schema: string;
   description: string;
   transformData: (arg: any) => Array<DataItem>;
+  accessToken?: string;
 }
 
 const Endpoint = (props: Props) => {
@@ -26,7 +27,7 @@ const Endpoint = (props: Props) => {
 
   const getData = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/${props.endpoint}`, { method: "GET" });
+    const response = await fetch(`/.netlify/functions/${props.endpoint}${props.accessToken ? '?access_token=' + props.accessToken : ''}`, { method: "GET" });
     const data = await response.json();
     if (data.error != null) {
       setError(data.error);
