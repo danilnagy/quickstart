@@ -12,12 +12,14 @@ const Link = () => {
     (public_token: string) => {
       // If the access_token is needed, send public_token to server
       const exchangePublicTokenForAccessToken = async () => {
-        const response = await fetch("/api/set_access_token", {
+        const response = await fetch("/.netlify/functions/set_access_token", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           },
-          body: `public_token=${public_token}`,
+          body: JSON.stringify({
+            public_token
+          }),
         });
         if (!response.ok) {
           dispatch({
